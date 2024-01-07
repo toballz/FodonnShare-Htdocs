@@ -1,0 +1,127 @@
+<?php
+include("./conf.php");
+if(isset($_GET['auttype']) && $_GET['auttype'] == "logout"){
+    $_SESSION['username']=[];
+    session_destroy();
+    exit(header("Refresh:0; url=?"));
+}?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <?php $headTitle=site::name." | Share Files and Data";include("ret/head.php");
+    //if(site::url("servername") !== "localhost"){include("ret/ads/popads.php");}
+    ?>
+    <style type="text/css">
+        .tabie{position:relative;max-width:800px;box-shadow:1px 2px 3px 1px #ccc;margin:14px 0 4px 0;padding:12px;background: #1c2755}
+        .userDatas{font-size:18px;margin:auto;height:600px;overflow-y:scroll;padding:12px;margin-top:14px;box-shadow:1px 2px 3px 1px #1c2349;}
+        .tablethead{box-shadow:0px 3px 4px #220d0d;display:inline-flex;justify-content:space-between;width:100%;padding:9px 12px;align-items:center}
+        .tabie::-webkit-scrollbar{width:4px;} .tabie::-webkit-scrollbar-track {box-shadow: inset 0 0 5px grey; border-radius: 10px; } .tabie::-webkit-scrollbar-thumb {background: #f43426; border-radius: 10px; } .tabie::-webkit-scrollbar-thumb:hover {background: #b30000;}
+        .dropdownmenuParent{position:relative;cursor:pointer;}
+        .dropdownmenuParent:hover>.dropdownmenu{display:block;}
+        .dropdownmenu{position:absolute;padding:2px;background:#adf4df;left:-160px;top:29px;display:none;max-width:200px;width:198px;z-index:12}
+        .dropdownmenu>a{padding:12px 45px;border-bottom:1px outset #fff}
+        .uploadFileImg,.uploadFile{width:56px;padding:5px;cursor:pointer;}
+    </style>
+</head>
+<body style="background:#151d3d;color: #fff;">
+    <?php include("ret/header.php");?>
+    <section class="container">
+        <div style="max-width: 800px;margin: auto;">
+            <?php if(isset($_SESSION['username'])){?>
+            <div class="tabie" style="display:inline-flex;width:100%;flex-wrap:wrap;justify-content:space-between;align-items:center;padding:15px;box-shadow:1px 2px 3px 1px #1c2349;">
+                <i></i>
+                <ul class="ttileUL"><?php foreach(str_split(strtoupper(site::name)) as $o=>$a){echo '<li><input type="checkbox" '.(($o==2||$o==3)?'checked':'').'/><div>'.$a.'</div></li>';}?></ul>
+
+
+                <div class="dropdownmenuParent">
+                    <img data-lazysrc="ret/img/user.svg" style="width:32px;" alt="User Icon">
+                    <div class="dropdownmenu">
+                        <a href=".0">Account</a>
+                        <a href="/p/pp.php">Privacy Policy</a>
+                        <a href="/?">Download</a>
+                        <a href="/blogdiscuss/352591234/Ask-Community">Help</a>
+                        <a href="/blogdiscuss/845345/Contact-Us">Contact US</a>
+                        <a href="/userpanel.php?auttype=logout">Logout</a>
+                    </div>
+                </div>
+
+
+                <div style="width:100%;text-align:center;margin-top:10px;">Share Bookmarks</div>
+            </div>
+            <div class="activity-col"></div>
+            <div class="tabie userDatas"></div>
+
+            <div class="tabie" style="margin:auto;width:100%;margin-top:12px;background: #fff;padding:1px;">
+                <div style="display: inline-flex;width:100% ">
+                    <textarea class="uploadDATAarr" style="width:100%;padding:10px;font-size:15px;border:0" placeholder="Input text / link"></textarea>
+                    <label><input style="display:none;" type="file" class="uploadFile" onchange="adga(this.files[0])"/><img alt="File Icon" class="uploadFileImg" style="height:100%;" data-lazysrc="ret/img/file.svg"/></label>
+                </div>
+                <button class="uploadBTNarr" style="width:100%;padding:13px;border:0;background:#10734d;cursor:pointer;color:#fff;height:179px;max-height:46px;">Submit</button>
+            </div>
+            <?php }else{?>
+                <style type="text/css">
+                    .signup input,.forgot,.login{padding:12px}
+                    .signup input,.forgot input,.login input{
+                        width:100%;padding:14px;margin-top:12px;
+                    }
+                    .signup a,.forgot a,.login a{color:#fff;margin-top:12px}
+                    .signup [type="submit"],.forgot [type="submit"],.login [type="submit"]{background:#62da62;border:0}
+                </style>
+                <?php if(isset($_GET['auttype']) && $_GET['auttype'] == "forgot"){?>
+                <div class="tabie forgot">
+                    <h1>Forgot Password</h1>
+                    <input type="text" name="forgotuname" placeholder="Username">
+                    <input type="text" name="forgotemail" placeholder="Email">
+                    <input type="submit" value="Recover Password" class="submitforgot" style="cursor:pointer;height:3rem;">
+                    <br/><br/><a href="/userpanel.php?auttype=login">login</a>
+                </div>
+                <script type="text/javascript">
+                    $(".submitforgot").click(function(){
+                        var tjemail=$('[name="forgotemail"]').val().trim();
+                        var tjuname=$('[name="forgotuname"]').val().trim();
+                        if(ValidateEmail(tjemail) && tjuname.length >= 5){
+                            $.post(apiconn,
+                                {fname:tjuname,
+                                vemail:tjemail,
+                                t:"forgot:password" ,
+                                api:"rats" },
+                                function(httpdatas){
+                                    var jsonde =(httpdatas);
+                                    if(httpdatas.code==200){
+                                        alert(httpdatas.message);
+                                    }else{alert(httpdatas.message);}
+                                });
+                        }else{
+                            alert("input a valid username and email!");
+                        }
+                    });
+                </script>
+                <?php } else if(isset($_GET['auttype']) && $_GET['auttype'] == "signup"){?>
+                <div class="tabie signup">
+                    <h1>Signup</h1>
+                    <input type="text" name="signupuname" placeholder="Username">
+                    <input type="email" name="signupemail" placeholder="Email">
+                    <input type="password" name="signuppassword" placeholder="Password">
+                    <input type="password" name="signupconfirmpassword" placeholder="Re-enter Password">
+                    <input type="submit" value="Signup" class="submitsignup" style="cursor:pointer;height:3rem;">
+                    <br/><br/><a href="/userpanel.php?auttype=login">login</a>
+                    <a href="/userpanel.php?auttype=forgot">Forgot Password</a>
+                </div>
+                <?php }else{?>
+                <div class="tabie login">
+                    <h1>Login</h1>
+                    <input type="text" name="loginuname" placeholder="Username / Email" value="">
+                    <input type="password" name="loginpassword" placeholder="Password" value="">
+                    <input type="submit" class="submitlogin" value="Login" style="height:3rem;cursor:pointer;">
+                    <br/><br/><a href="/userpanel.php?auttype=signup">Signup</a>
+                    <a href="/userpanel.php?auttype=forgot">Forgot Password</a>
+                </div>
+           <?php } }?>
+        </div>
+    </section>
+
+    <footer>
+    <?php include("ret/footer.php");?>
+    </footer>
+</body>
+</html>
