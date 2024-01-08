@@ -154,6 +154,13 @@ if (isset($_POST['api'])) {
 
        }else{$Jarr['code']=500;$Jarr['message']="Internal error! Please contact us.";}
     }
+    if (isset($_POST['t']) && $_POST['t']=="update:tk" && isset($_POST['tk'])){
+       $tk=mysqli_real_escape_string(db::conn(),trim($_POST['tk']));
+       $gtt=db::stmt("UPDATE `traffic` SET `countt` = countt + 1 WHERE `fromwhichwebsite` = '$tk'");
+        //returns null
+        if($gtt){$Jarr['code']=200;$Jarr['message']="true";}
+        else{$Jarr['code']=404;$Jarr['message']="false";} 
+    }
 }
 //send files
 elseif (isset($_FILES['t']) && explode(";;",$_FILES['t']["name"])[0]=="upload:filE") {

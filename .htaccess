@@ -1,11 +1,15 @@
 RewriteEngine on
 
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+#
 RewriteRule ^catch/(.*)$ a/$1
 RewriteRule ^blogdiscuss/(.*)/(.*)$ discuss.php?blogid=$1&blogtitle=$2 [NC,L]
-Redirect 301 /p/pp.php /blogdiscuss/353491234/Privacy-Policy
-Redirect 301 /p/howto.php /blogdiscuss/98237435/Delete-An-Account
 ErrorDocument 404 /.404.php
 
+#
 <FilesMatch "\.(?i:gif|jpe?g|png|ico|css|js|swf|mp4|svg)$">
 
   <IfModule mod_headers.c>
@@ -14,11 +18,12 @@ ErrorDocument 404 /.404.php
 
 </FilesMatch>
 
+#
 Header always set Access-Control-Allow-Origin "https://fodonn.com"
 Header always set Access-Control-Allow-Methods "POST, GET, OPTIONS, DELETE, PUT"
 Header always set Access-Control-Max-Age "1000"
 Header always set Access-Control-Allow-Headers "x-requested-with, Content-Type, origin, authorization, accept, client-security-token"
 
-RewriteEngine On
+# if option exit 200
 RewriteCond %{REQUEST_METHOD} OPTIONS
 RewriteRule ^(.*)$ $1 [R=200,L]

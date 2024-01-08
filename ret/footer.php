@@ -16,4 +16,4 @@
 		</div>
 	</div>
 </section>
-<script type="text/javascript" src="/ret/js.js?<?php echo isset($reloadStatic)?$reloadStatic:'12';?>"></script>
+<script type="text/javascript" src="/ret/js.js?a<?php echo isset($reloadStatic)?$reloadStatic:'1a2';?>"></script>
