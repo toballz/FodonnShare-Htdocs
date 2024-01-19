@@ -23,6 +23,15 @@ if (isset($_POST['api'])) {
        }else{$Jarr['code']=500; $Jarr['message']="Account not created. Try a different username or email"; }
    }
 
+   if(isset($_POST['t']) && ($_POST['t']=="delete:account")){
+       $uid=mysqli_real_escape_string(db::conn(),trim(strtolower($_POST['uid'])));  
+
+       if(db::stmt("UPDATE `users` set `email`=CONCAT( '-deleted-',email), `username`=CONCAT('-deleted-',username), `premuimType`=CONCAT(premuimType,'-deleted-') WHERE `id`='$uid'")){
+        $Jarr['code']=200;
+        $Jarr['message']="Account deleted";
+       } else{$Jarr['code']=500; $Jarr['message']="Could not delete account. Contact Us."; }
+   }
+
    //update email user preference data
    if(isset($_POST['t']) && $_POST['t']=="update:Email"){
        $email=mysqli_real_escape_string(db::conn(),trim($_POST['email']));
