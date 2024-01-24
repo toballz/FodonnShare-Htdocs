@@ -22,4 +22,6 @@ class tools{
     }
     const googlePlayAndroidLink="https://play.google.com/store/apps/details?id=com.Fodonnapp.shares&hl=en_US&gl=US";
     const windowsDesktopLink="blogdiscuss/92365832/How-to-install-on-desktop---windows-781011";
+
+    const passwordsalt="\u2315c#7@&8*";
 }

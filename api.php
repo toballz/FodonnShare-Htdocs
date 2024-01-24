@@ -1,6 +1,5 @@
 <?php include_once("conf.php");?>
 <?php
-$salt="\u2315c#7@&8*";
 header('Content-Type: application/json');
 //**//forgot password
 //**//contact us
@@ -13,7 +12,7 @@ if (isset($_POST['api'])) {
        $uname=mysqli_real_escape_string(db::conn(),trim(strtolower($_POST['uname'])));
        $email=mysqli_real_escape_string(db::conn(),trim(strtolower($_POST['email'])));
        $pword=$_POST['pwod'];
-       $hashedpassword=md5($pword.$salt);
+       $hashedpassword=md5($pword.tools::passwordsalt);
 
        if(db::stmt("INSERT INTO `users` (`username`, `password`, `email`, `id`, `datetime`) VALUES ('$uname', '$hashedpassword', '$email', '$uid', current_timestamp());")){
         $Jarr['code']=200;
@@ -77,7 +76,7 @@ if (isset($_POST['api'])) {
 
     if (isset($_POST['t']) && $_POST['t']=="access:login"){
                $uname=mysqli_real_escape_string(db::conn(),trim($_POST['uname']));
-               $upwod=md5($_POST['pwod'].$salt);
+               $upwod=md5($_POST['pwod'].tools::passwordsalt);
 
                $gtt=db::stmt("SELECT * FROM `users` WHERE `username`='$uname'  AND `password`='$upwod' LIMIT 1;");
                if($gtt){
@@ -149,13 +148,25 @@ if (isset($_POST['api'])) {
     //forgot password
     if (isset($_POST['t']) && $_POST['t']=="forgot:password" && isset($_POST['unameoremail'])){
        $unameoremail=mysqli_real_escape_string(db::conn(),trim($_POST['unameoremail']));
-       $gtt=db::stmt("SELECT `username`,`email` FROM `users` WHERE `username` = '$unameoremail' OR `email`='$unameoremail' LIMIT 1;");
+       $gtt=db::stmt("SELECT `id`,`username`,`email` FROM `users` WHERE `username` = '$unameoremail' OR `email`='$unameoremail' LIMIT 1;");
        if($gtt){
             if($gtt->num_rows == 1){
-                $gtta=true;//mail($emaili, "FodonnApp; Reset Your Pass Word!", "FullName: {$fname}\nEmail: {$vemail}\nPhone: {$bphone}\nMessage: {$rmessage}");
-                if($gtta){
+                $fetchAssoci=mysqli_fetch_assoc($gtt);
+                $getContentOfResetHtml=file_get_contents("https://fodonn.com/resetpow.php?resetp=".$fetchAssoci['id']);
+                
+                $mailto = $fetchAssoci['email'];
+                $mailsubject = "Fodonn - Share; Reset Your PassWord!";
+                $mailheaders  = "From: noreply@fodonn.com\r\n";
+                //$mailheaders .= "Reply-To: " . strip_tags($_POST['req-email']) . "\r\n";
+                $mailheaders .= "MIME-Version: 1.0\r\n";
+                $mailheaders .= "Content-Type: text/html; charset=UTF-8\r\n";
+                $mailmessage = $getContentOfResetHtml;
+
+                $mailIsSent=mail($mailto,$mailsubject,$mailmessage,$mailheaders );
+                
+                if($mailIsSent){
                     $Jarr['code']=200;
-                    $Jarr['message']="Your password reset link has been sent to your email.";
+                    $Jarr['message']="Your password reset link has been sent to your email. Also check your spam folders.";
                }else{$Jarr['code']=500;$Jarr['message']="There was an error sending you a reset link to your email. Please contact us.";}
             }else{
                 $Jarr['code']=404;$Jarr['message']="This username or email was not found.";
