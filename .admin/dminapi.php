@@ -24,7 +24,8 @@ $counter=db::stmt("SELECT
     (SELECT `countt` FROM traffic WHERE `fromwhichwebsite` = 'pin') AS trafficfrompinterest ,
     (SELECT `countt` FROM traffic WHERE `fromwhichwebsite` = 'tw') AS trafficfromtwitter ,
     (SELECT `countt` FROM traffic WHERE `fromwhichwebsite` = 'ggl') AS trafficfromgoogle ,
-    (SELECT `countt` FROM traffic WHERE `fromwhichwebsite` = 'dis') AS trafficfromtwitterdiscord 
+    (SELECT `countt` FROM traffic WHERE `fromwhichwebsite` = 'dis') AS trafficfromdiscord, 
+    (SELECT `countt` FROM traffic WHERE `fromwhichwebsite` = 'appl') AS trafficfromapple 
 			
 			
         FROM users");
@@ -55,7 +56,8 @@ $arrjson['trafficfrominstagram']=$countArray['trafficfrominstagram'];
 $arrjson['trafficfromtwitter']=$countArray['trafficfromtwitter'];
 $arrjson['trafficfrompinterest']=$countArray['trafficfrompinterest'];
 $arrjson['trafficfromgoogle']=$countArray['trafficfromgoogle'];
-$arrjson['trafficfromtwitterdiscord']=$countArray['trafficfromtwitterdiscord'];
+$arrjson['trafficfromdiscord']=$countArray['trafficfromdiscord'];
+$arrjson['trafficfromapple']=$countArray['trafficfromapple'];
 //while($aj=mysqli_fetch_assoc($acv)){
 //	$arrjson[]=$aj;
 //}

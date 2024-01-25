@@ -698,7 +698,8 @@
                                             <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle instagram-bgcolor mr-2"><i class="fab fa-instagram"></i></span><span class="social-sales-name">Instagram</span><span class="social-sales-count text-dark" id="trafficfrominstagram">Loading ...</span></li>
                                             <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle pinterest-bgcolor mr-2"><i class="fab fa-pinterest-p"></i></span><span class="social-sales-name">Pinterest</span><span class="social-sales-count text-dark" id="trafficfrompinterest">Loading ...</span></li>
                                             <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle googleplus-bgcolor mr-2"><i class="fab fa-google-plus-g"></i></span><span class="social-sales-name">Google Plus</span><span class="social-sales-count text-dark" id="trafficfromgoogle">Loading ...</span></li>
-											<li class="list-group-item social-sales-content"><span class="social-sales-icon-circle discord-bgcolor mr-2"><i class="fab fa-google-plus-g"></i></span><span class="social-sales-name">Discord</span><span class="social-sales-count text-dark" id="trafficfromtwitterdiscord">Loading ...</span></li>
+											<li class="list-group-item social-sales-content"><span class="social-sales-icon-circle discord-bgcolor mr-2"><i class="fab fa-google-plus-g"></i></span><span class="social-sales-name">Discord</span><span class="social-sales-count text-dark" id="trafficfromdiscord">Loading ...</span></li>
+                                            <li class="list-group-item social-sales-content"><span class="social-sales-icon-circle twitter-bgcolor mr-2"><i class="fab fa-twitter"></i></span><span class="social-sales-name">Apple</span><span class="social-sales-count text-dark" id="trafficfromapple">Loading ...</span></li>
                                         </ul>
                                     </div>
                                     <div class="card-footer text-center">
@@ -874,12 +875,13 @@
 			
 			if(2==2){
 				
-				$("#trafficfromtwitterdiscord").html(parseInt(datas['trafficfromtwitterdiscord']).toLocaleString('en-US', { style: 'decimal' }));
+				$("#trafficfromdiscord").html(parseInt(datas['trafficfromdiscord']).toLocaleString('en-US', { style: 'decimal' }));
 				$("#trafficfromfacebook").html(parseInt(datas['trafficfromfacebook']).toLocaleString('en-US', { style: 'decimal' }));
 				$("#trafficfrominstagram").html(parseInt(datas['trafficfrominstagram']).toLocaleString('en-US', { style: 'decimal' }));
 				$("#trafficfrompinterest").html(parseInt(datas['trafficfrompinterest']).toLocaleString('en-US', { style: 'decimal' }));
 				$("#trafficfromgoogle").html(parseInt(datas['trafficfromgoogle']).toLocaleString('en-US', { style: 'decimal' }));
 				$("#trafficfromtwitter").html(parseInt(datas['trafficfromtwitter']).toLocaleString('en-US', { style: 'decimal' } ));
+				$("#trafficfromapple").html(parseInt(datas['trafficfromapple']).toLocaleString('en-US', { style: 'decimal' } ));
 			}
 		});
 		
