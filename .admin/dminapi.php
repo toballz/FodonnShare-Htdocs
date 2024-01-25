@@ -9,8 +9,8 @@ header('Content-Type: application/json');
 if (isset($_GET['api']) && $_GET['api'] !== "") {
 	
 $counter=db::stmt("SELECT 
-            COUNT(id) AS totalusers,
-            COUNT(CASE WHEN `premiunm` = '1' THEN id END) AS numuserspremiumchk,
+            COUNT(CASE WHEN `id` IS NOT NULL AND `premuimType` != 'admin' THEN id END) AS totalusers,
+            COUNT(CASE WHEN `premiunm` = '1' AND `premuimType` != 'admin' THEN id END) AS numuserspremiumchk,
 			
             COUNT(CASE WHEN `premuimType` = 'weekly' THEN id END) AS weeklysub,
             COUNT(CASE WHEN `premuimType` = 'monthly' THEN id END) AS monthlysub,
