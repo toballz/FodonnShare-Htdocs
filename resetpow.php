@@ -141,8 +141,8 @@ if(isset($_GET['resetp']) && $_GET['resetp'] != ""){
         $resetpri=$_GET['resetpr'];
         $resetpriDeco=json_decode(deco($resetpri));
         $currentDateTime = new DateTime();
-        
-        ?>
+        $currentDateTime=$currentDateTime->format("U");
+    ?>
     <style>
     .mainbody input {
         display: block;
@@ -162,30 +162,30 @@ if(isset($_GET['resetp']) && $_GET['resetp'] != ""){
     </style>
     <main class="mainbody">
         <section>
-            
+
             <?php
             $pwrGet=$resetpriDeco->passtk;
             function taha($stringg, $bgcolor){return '<div
                 style="background:'.$bgcolor.';padding:20px;color:#fff"><b>'.$stringg.'</b></div>';}
-            if($currentDateTime <= $resetpriDeco->arovak){
+            if($currentDateTime >= $resetpriDeco->arovak){
                 exit(taha("Reset Link Expired not_valid_user-time", "red"));
             }
-            $stmtDBresult=db::stmt("SELECT `password` FROM `users` WHERE `password`='$pwrGet' LIMIT 1");
+            $stmtDBresult=db::stmt("SELECT `username`,`password` FROM `users` WHERE `password`='$pwrGet' LIMIT 1");
             if(mysqli_num_rows($stmtDBresult)<1){exit(taha("Link Expired not_valid_user-pop","red"));}
 
             if(isset($_POST['pw']) && strlen($_POST['pw']) > 6 
             && isset($_POST['cp']) && $_POST['cp'] != ""){
                 $pwr2set=md5($_POST['pw'].tools::passwordsalt);
-                $stmtDBresult=db::stmt("UPDATE `users` SET `password` = '".$pwr2set."' WHERE `users`.`password` = '$pwrGet';");
-                if($stmtDBresult){
+                $stmtDBresul1t=db::stmt("UPDATE `users` SET `password` = '".$pwr2set."' WHERE `users`.`password` = '$pwrGet';");
+                if($stmtDBresul1t){
                     exit(taha("Password updated","green"));
                 }else{
                     echo taha("password not updated. Try again or contact us","red");
                 }  
             }?>
-            <h1>Reset your password</h1>
+            <h1>Reset your password - <?php echo mysqli_fetch_assoc($stmtDBresult)['username'];?></h1>
             <h4><?php echo site::name;?> - Share</h4>
-            <form id="resetprta" action="<?php echo site::url("full");?>" method="POST">
+            <form onsubmit="handleiSubmit(event)" action="<?php echo site::url("full");?>" method="POST">
                 <label>Type your new password.</label>
                 <input type="password" placeholder="Type your new password." minlength="6" name="pw" />
                 <br>
@@ -198,9 +198,22 @@ if(isset($_GET['resetp']) && $_GET['resetp'] != ""){
     </main>
 
     <?php }else{
-    exit("not_valid_user-geg");
-}?>
-    <script></script>
+        exit("not_valid_user-geg");
+    }?>
+    <script>
+    function handleiSubmit(event) {
+        event.preventDefault();
+        var passwordInput = document.querySelector('input[name="pw"]');
+        var passwordInputv = document.querySelector('input[name="pwv"]');
+        if (passwordInput.value.length < 5) {
+            alert("Your passwords cannot be empty");
+        } else if (passwordInput != passwordInputv) {
+            alert("Your passwords are not the same!");
+        } else {
+            event.submit();
+        }
+    }
+    </script>
 
 </body>
 
