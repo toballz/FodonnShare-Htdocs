@@ -200,7 +200,7 @@ if(isset($_GET['resetp']) && $_GET['resetp'] != ""){
     <?php }else{
         exit("not_valid_user-geg");
     }?>
-    <script>function handleiSubmit(event){event.preventDefault();var passwordInput = document.querySelector('input[name="pw"]'),passwordInputv = document.querySelector('input[name="pwv"]');if(passwordInput.value.length < 5){alert("Your passwords cannot be empty");} else if (passwordInput != passwordInputv) {alert("Your passwords are not the same!");}else{event.submit();}}</script>
+    <script>function handleiSubmit(event) {event.preventDefault();var passwordInput = document.querySelector('input[name="pw"]'),passwordInputv = document.querySelector('input[name="pwv"]');if (passwordInput.value.length < 5) {alert("Your passwords cannot be empty");} else if (passwordInput.value !== passwordInputv.value) {alert("Your passwords are not the same!");} else {event.target.submit();}}</script>
 
 </body>
 
